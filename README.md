@@ -125,7 +125,7 @@ lintly/
 
 Open an issue or PR — Lintly will review your code automatically.
 
-Lintly dogfoods itself: every PR to this repo is reviewed by Lintly.
+Lintly dogfoods itself — every PR to this repo is reviewed by Lintly.
 
 ## License
 

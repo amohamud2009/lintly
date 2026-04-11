@@ -13,17 +13,21 @@ function getStripe(): Stripe {
 
 export async function createCheckoutSession(
   userId: string,
-  priceId: string,
+  lineItems: { price: string; quantity: number }[],
   successUrl: string,
-  cancelUrl: string
+  cancelUrl: string,
+  options?: { orgId?: string }
 ) {
+  const metadata: Record<string, string> = { userId };
+  if (options?.orgId) metadata.orgId = options.orgId;
+
   const session = await getStripe().checkout.sessions.create({
     mode: "subscription",
     payment_method_types: ["card"],
-    line_items: [{ price: priceId, quantity: 1 }],
+    line_items: lineItems,
     success_url: successUrl,
     cancel_url: cancelUrl,
-    metadata: { userId },
+    metadata,
   });
 
   return session;

@@ -15,9 +15,10 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Lintly — AI-Powered PR Reviews",
+  title: "Lintly — The review layer for the AI code era",
   description:
-    "Automated code reviews for your GitHub pull requests, powered by AI.",
+    "AI writes the code. Lintly catches the hallucinated APIs, missing edge cases, and security shortcuts before they reach production.",
+  icons: { icon: "/favicon.svg" },
 };
 
 export default function RootLayout({

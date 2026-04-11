@@ -6,6 +6,28 @@ export function createOctokit(token: string) {
   return new Octokit({ auth: token });
 }
 
+export async function getInstallationForRepo(
+  owner: string,
+  repo: string
+): Promise<number | null> {
+  try {
+    const appOctokit = new Octokit({
+      authStrategy: createAppAuth,
+      auth: {
+        appId: process.env.GITHUB_APP_ID!,
+        privateKey: Buffer.from(
+          process.env.GITHUB_PRIVATE_KEY!,
+          "base64"
+        ).toString("utf-8"),
+      },
+    });
+    const { data } = await appOctokit.apps.getRepoInstallation({ owner, repo });
+    return data.id;
+  } catch {
+    return null;
+  }
+}
+
 export async function getInstallationAccessToken(
   installationId: number
 ): Promise<string> {
@@ -92,6 +114,30 @@ export async function postReviewSummary(
     repo,
     issue_number: pullNumber,
     body,
+  });
+}
+
+export async function postCommitStatus(
+  octokit: Octokit,
+  owner: string,
+  repo: string,
+  sha: string,
+  score: number,
+  summary: string
+) {
+  const state: "success" | "pending" | "failure" =
+    score >= 80 ? "success" : score >= 60 ? "pending" : "failure";
+
+  const truncated = summary.length > 140 ? summary.slice(0, 137) + "..." : summary;
+  const description = `Score: ${score}/100 — ${truncated}`;
+
+  await octokit.repos.createCommitStatus({
+    owner,
+    repo,
+    sha,
+    state,
+    description: description.slice(0, 140),
+    context: "Lintly / Code Review",
   });
 }
 

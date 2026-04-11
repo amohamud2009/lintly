@@ -12,7 +12,7 @@ html {
 @keyframes fade-in {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(16px);
   }
   to {
     opacity: 1;
@@ -23,7 +23,7 @@ html {
 @keyframes fade-in-slow {
   from {
     opacity: 0;
-    transform: translateY(12px);
+    transform: translateY(10px);
   }
   to {
     opacity: 1;
@@ -50,15 +50,24 @@ html {
 }
 
 .animate-fade-in {
-  animation: fade-in 0.8s ease-out both;
+  animation: fade-in 0.7s cubic-bezier(0.25, 0.1, 0.25, 1) both;
+  will-change: opacity, transform;
 }
 
 .animate-fade-in-slow {
-  animation: fade-in-slow 0.9s ease-out both;
+  animation: fade-in-slow 0.9s cubic-bezier(0.25, 0.1, 0.25, 1) both;
+  will-change: opacity, transform;
 }
 
 .animate-glow-pulse {
   animation: glow-pulse 4s ease-in-out infinite;
+}
+
+/* Pre-reveal state — matches fade-in keyframe start exactly */
+.scroll-hidden {
+  opacity: 0;
+  transform: translateY(16px);
+  will-change: opacity, transform;
 }
 
 .stagger-1 { animation-delay: 0.1s; }

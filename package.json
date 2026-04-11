@@ -13,11 +13,15 @@
     "@octokit/auth-app": "^8.2.0",
     "@octokit/rest": "^22.0.1",
     "@supabase/supabase-js": "^2.103.0",
+    "ai": "^6.0.157",
     "inngest": "^4.2.0",
     "next": "14.2.35",
     "next-auth": "^4.24.13",
     "react": "^18",
     "react-dom": "^18",
+    "react-markdown": "^10.1.0",
+    "recharts": "^3.8.1",
+    "resend": "^6.10.0",
     "stripe": "^22.0.1"
   },
   "devDependencies": {

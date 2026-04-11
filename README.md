@@ -121,6 +121,10 @@ lintly/
 └── supabase/               # Database schema & migrations
 ```
 
+## Contributing
+
+Open an issue or PR — Lintly will review your code automatically.
+
 ## License
 
 MIT

@@ -25,7 +25,7 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    if (event === "pull_request" && payload.action === "opened") {
+    if (event === "pull_request" && (payload.action === "opened" || payload.action === "synchronize")) {
       const pr = payload.pull_request as Record<string, unknown>;
       const repo = payload.repository as Record<string, unknown>;
       const installation = payload.installation as Record<string, unknown> | undefined;

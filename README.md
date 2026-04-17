@@ -1,36 +1,132 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Lintly
+
+**The review layer for the AI code era.**
+
+AI writes the code. Lintly catches the hallucinated APIs, missing edge cases, and security shortcuts before they reach production.
+
+## What Lintly Does
+
+Lintly is a GitHub App that automatically reviews every pull request with AI. It posts inline comments on your PR with a quality score, severity ratings, and actionable fix suggestions.
+
+### Key Features
+
+- **AI Code Review** — Claude-powered review on every PR, with inline comments and a quality score
+- **AI Code Mode** — Flags patterns AI tools commonly get wrong: hallucinated APIs, missing null checks, overconfident error handling, hardcoded credentials
+- **Security Scanner** — Real-time vulnerability detection across your codebase
+- **Agentic Fix System** — One-click apply for suggested fixes, or walk-through explanations for complex issues
+- **Ask Lintly Chat** — Agentic AI assistant that can run scans, review PRs, read files, and create GitHub issues
+- **Team Management** — Invite members, assign roles, track PR velocity and team insights
+- **Insights Dashboard** — Score trends, recurring patterns, severity breakdowns, and actionable recommendations
+- **Daily Digest Emails** — Automated codebase health reports delivered to your inbox
+
+## Tech Stack
+
+| Layer | Technology |
+|-------|-----------|
+| Framework | Next.js 14 (App Router) |
+| Language | TypeScript |
+| Styling | Tailwind CSS |
+| Auth | NextAuth.js + GitHub OAuth |
+| Database | Supabase (PostgreSQL) |
+| AI | Anthropic Claude |
+| Payments | Stripe (4-tier billing) |
+| Background Jobs | Inngest |
+| Email | Resend |
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 18+
+- A GitHub App (for webhook integration)
+- Supabase project
+- Anthropic API key
+- Stripe account (for billing)
+
+### Setup
+
+```bash
+git clone https://github.com/amohamud2009/lintly.git
+cd lintly
+npm install
+```
+
+Copy the environment template and fill in your keys:
+
+```bash
+cp .env.example .env.local
+```
+
+Run the database migrations in your Supabase SQL editor using `supabase/schema.sql`.
+
+Start the dev server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Environment Variables
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+See `.env.example` for the full list. Key variables:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Variable | Description |
+|----------|-------------|
+| `GITHUB_APP_ID` | Your GitHub App ID |
+| `GITHUB_PRIVATE_KEY` | GitHub App private key (base64) |
+| `GITHUB_WEBHOOK_SECRET` | Webhook signature secret |
+| `NEXTAUTH_SECRET` | NextAuth encryption secret |
+| `SUPABASE_URL` | Supabase project URL |
+| `SUPABASE_SERVICE_KEY` | Supabase service role key |
+| `ANTHROPIC_API_KEY` | Claude API key |
+| `STRIPE_SECRET_KEY` | Stripe secret key |
+| `STRIPE_WEBHOOK_SECRET` | Stripe webhook signing secret |
+| `RESEND_API_KEY` | Resend email API key |
 
-## Learn More
+## Plans
 
-To learn more about Next.js, take a look at the following resources:
+| Plan | Price | Reviews | Features |
+|------|-------|---------|----------|
+| Free | $0 | 10/mo | Basic AI review |
+| Pro | $19.99/mo | 100/mo | Security scans, chat, patterns |
+| Team | $49.99/mo | 500/mo | Team management, reports, seats |
+| Enterprise | Custom | Unlimited | Everything + priority support |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Architecture
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+lintly/
+├── app/                    # Next.js App Router pages & API routes
+│   ├── api/                # REST endpoints
+│   │   ├── chat/           # Agentic AI chat (SSE streaming)
+│   │   ├── fix/            # Apply/explain fix endpoints
+│   │   ├── webhook/        # GitHub & Stripe webhooks
+│   │   └── ...
+│   └── dashboard/          # Dashboard pages
+│       ├── chat/           # Ask Lintly chat UI
+│       ├── insights/       # Analytics & insights
+│       ├── repos/          # Repository management
+│       ├── review/[id]/    # Review detail with comments
+│       └── settings/       # Settings & team management
+├── inngest/                # Background job functions
+│   ├── review.ts           # PR review pipeline
+│   ├── security-scan.ts    # Vulnerability scanner
+│   ├── digest.ts           # Daily digest emails
+│   └── patterns.ts         # Recurring pattern detection
+├── lib/                    # Shared utilities
+│   ├── claude.ts           # Anthropic Claude integration
+│   ├── github.ts           # GitHub App + API helpers
+│   ├── db.ts               # Supabase client & queries
+│   ├── stripe.ts           # Stripe billing helpers
+│   └── plans.ts            # Plan definitions & limits
+└── supabase/               # Database schema & migrations
+```
 
-## Deploy on Vercel
+## Contributing
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Open an issue or PR — Lintly will review your code automatically.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Lintly dogfoods itself — every PR to this repo is reviewed by Lintly.
+
+## License
+
+MIT
